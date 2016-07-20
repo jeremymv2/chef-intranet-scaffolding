@@ -100,10 +100,12 @@ As of version 12.4.0, Chef Server has a Universe endpoint, which provides the sa
 
 ```
 # Berksfile
-source 'https://chef-server.yourcompany.com'
+source :chef_server
 
 metadata
 ```
+
+ If a source is configured with the location :chef_server, then Berkshelf will use the configured Chef Server as an API source. This requires Chef Server 12.4.0 or newer, or Hosted Chef.
 
 ### Internal Supermarket
 A private supermarket provides an easily searchable cookbook repository (with friendly GUI and command line interfaces) that can run on a company’s internal network.
