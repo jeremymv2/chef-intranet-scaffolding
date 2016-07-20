@@ -3,7 +3,7 @@ What kind of scaffolding does it take to run Chef on a network with no Internet 
 
 ### Busser / Serverspec
 Historically, the trickiest part of operating Chef in an Air Gapped environment has been local development when using the `test-kitchen` verifier.
-The default for a long time has been busser / serverspec (this changed to `inspec` in version 0.16.28 of `test-kitchen`)
+The default for a long time has been busser / serverspec (this changed to `inspec` in version 0.16.28 of `chef-dk`)
 
 The trouble is that Busser is not Proxy friendly and does not allow use of an alternate GemSource to https://rubygems.org
  * https://github.com/test-kitchen/busser/issues/21
@@ -16,11 +16,11 @@ The recommended approach is simply migrating over to `inspec` rather then try to
  * https://docs.chef.io/inspec_reference.html
  * https://github.com/chef/inspec
 
- ```
- # .kitchen.yml
- verifier:
-    name: inspec
-    format: doc
+```
+# .kitchen.yml
+verifier:
+   name: inspec
+   format: doc
 ```
 
 ### Ruby Gems, RPMs, DEBs, etc.
