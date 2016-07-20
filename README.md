@@ -1,30 +1,34 @@
-# chef-intranet-scaffolding
-What kind of scaffolding it takes to run Chef with no Internet access
+# Chef Intranet Scaffolding
+What kind of scaffolding does it take to run Chef on a network with no Internet access?
 
-# Busser / Serverspec
-Historically the trickiest part of local development in an Air Gapped environment is with `test-kitchen` verifier.
-The default for a long time has been busser / serverspec (this changed to `inspec` in version v0.16.28)
+### Busser / Serverspec
+Historically, the trickiest part of operating Chef in an Air Gapped environment has been local development when using the `test-kitchen` verifier.
+The default for a long time has been busser / serverspec (this changed to `inspec` in version 0.16.28 of `test-kitchen`)
 
-The trouble is that Busser is not Proxy friendly and does not allow use of an alternate GemSource to rubygems.org
+The trouble is that Busser is not Proxy friendly and does not allow use of an alternate GemSource to https://rubygems.org
  * https://github.com/test-kitchen/busser/issues/21
  * https://github.com/test-kitchen/busser/issues/33
 
-A much easier way to tackle this is by simply migrating over to `inspec`
-`inspec` does not reach out for any additional gems to install. Migrating to `inspec` from `serverspec` is pretty straight forward. Keep in mind that `inspec` currently does not allow for nested `describe` blocks.
+The recommended approach is simply migrating over to `inspec` rather then try to tackle setting proxy environment variables, creating custom box images with the gems pre-installed, etc.
 
-https://docs.chef.io/inspec_reference.html
+`inspec` does not reach out to the Internet for any additional gems to install. Additionally, migrating from `serverspec` is pretty straight forward. Keep in mind that `inspec` currently does not allow for nested `describe` blocks, other than that, it's resources are mostly the same with extra functionality and flexibility of custom extensions.
 
-# Ruby Gems, RPMs, DEBs, etc.
-Utilize an artifact server like Artifactory Pro. It allows for mirroring rubygems or acting like a caching proxy.
+ * https://docs.chef.io/inspec_reference.html
+ * https://github.com/chef/inspec
+
+### Ruby Gems, RPMs, DEBs, etc.
+If you're going to operate Chef without Internet access, you will need to utilize an artifact server to host packages, binaries, gems, rpms, etc.
+
+One very good option for this is Artifactory Pro. It supports almost any artifact / repo known to man, and it allows mirroring rubygems.org or acting like a caching proxy to it.
 https://www.jfrog.com/confluence/display/RTF/RubyGems+Repositories
 
-# ChefDK
-Host the chefdk package internally so that users can easily install it
+### ChefDK
+Host the chefdk package internally so that users can easily install it.
 
-# Chef Client
-Host the chef-client package internally; to be used for bootstrapping nodes and in local dev with `test-kitchen`
+### Chef Client
+Host the chef-client package internally; to be used for bootstrapping nodes and in local development with `test-kitchen`
 
-You can reference this location in local dev in your `.kitchen.yml` file:
+You can reference this location in your `.kitchen.yml` file:
 ```
 provisioner:
   name: chef_zero
@@ -40,10 +44,10 @@ wget http://my.web.server/chef-pkgs/chef-12.8.1-1.el7.x86_64.rpm
 sudo rpm -Uvh /tmp/chef-12.8.1-1.el7.x86_64.rpm
 ```
 
-# Bootstrap considerations
-Use `--bootstrap-install-sh URL` to point to the location of `install.sh` above.
+### Bootstrap considerations
+Use `--bootstrap-install-sh http://my.web.server/chef-pkgs/install.sh` knife option to point to the location of the installer script.
 
-# Installing additional gems via chef-client
+### Installing additional gems via chef `gem_package` resource
 ```
 gem_package 'train' do
   options('--no-rdoc --no-ri --no-user-install --source https://your.gem.server')
@@ -88,7 +92,20 @@ execute 'extract gems' do
 end
 ```
 
-# Internal Supermarket
+## Cookbook Repositories
+Cookbooks inevitably have dependencies; managing those in the development phase is accomplished via Berkshelf.
+
+### Chef Server
+As of version 12.4.0, Chef Server has a Universe endpoint, which provides the same output as Supermarket or berkshelf-api universe endpoints.
+
+```
+# Berksfile
+source 'https://chef-server.yourcompany.com'
+
+metadata
+```
+
+### Internal Supermarket
 A private supermarket provides an easily searchable cookbook repository (with friendly GUI and command line interfaces) that can run on a company’s internal network.
 
 https://blog.chef.io/2015/12/31/a-supermarket-of-your-own-running-a-private-supermarket/
@@ -97,7 +114,21 @@ You can publish to a Supermarket in several ways, some notable methods:
  * https://github.com/sethvargo/stove
  * https://github.com/chef/knife-supermarket (feature has been moved into core Chef in versions greater than 12.11.18)
 
-# Minimart
+```
+# Berksfile
+source 'https://yourinternal.supermarket.com'
+
+metadata
+```
+
+### Minimart
 MiniMart allows you to specify a list of cookbooks to mirror in YAML. MiniMart will then download any of the listed cookbooks and their dependencies to your machine. Once you are satisfied with the mirrored cookbooks, MiniMart can generate a Berkshelf compatible index of the available inventory.
 
-https://electric-it.github.io/minimart/
+ * https://electric-it.github.io/minimart/
+
+```
+# Berksfile
+source 'https://yourinternal.minimart.com'
+
+metadata
+```
