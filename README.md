@@ -89,6 +89,9 @@ end
 
 execute 'extract gems' do
   command "tar -xvf #{download_location} -C #{node[:languages][:ruby][:gems_dir]}"
+  not_if do
+    ::File.exist?("#{node[:languages][:ruby][:gems_dir]}/somegem")
+  end
 end
 ```
 
