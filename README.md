@@ -16,6 +16,13 @@ The recommended approach is simply migrating over to `inspec` rather then try to
  * https://docs.chef.io/inspec_reference.html
  * https://github.com/chef/inspec
 
+ ```
+ # .kitchen.yml
+ verifier:
+    name: inspec
+    format: doc
+```
+
 ### Ruby Gems, RPMs, DEBs, etc.
 If you're going to operate Chef without Internet access, you will need to utilize an artifact server to host packages, binaries, gems, rpms, etc.
 
