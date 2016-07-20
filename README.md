@@ -95,6 +95,12 @@ execute 'extract gems' do
 end
 ```
 
+### Other Chef Infrastructure
+One of the best methods of installing Chef components is with the `chef-ingredient` cookbook.
+ * https://github.com/chef-cookbooks/chef-ingredient
+
+Alas, it requires installation of `mixlib-install` ruby gem and all of its dependencies.  Refer to the gem installation methods above to accomplish this in an Air Gapped environment.
+
 ## Cookbook Repositories
 Cookbooks inevitably have dependencies; managing those in the development phase is accomplished via Berkshelf.
 
