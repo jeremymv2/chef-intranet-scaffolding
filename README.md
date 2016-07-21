@@ -61,7 +61,16 @@ gem_package 'train' do
 end
 ```
 
-Alteratively, you can bundle up the gems you need into a tarball, host that as an artifact internally, then download and extract:
+Another approach is to simply update root's .gemrc
+```
+gembin = Chef::Util::PathHelper.join(Chef::Config.embedded_dir,'bin','gem')
+execute 'set internal gem repo' do
+ command "#{gembin} source -r https://rubygems.org/ -a https://your.gem.server"
+ action :run
+end
+```
+
+Alternatively, you can bundle up the gems you need into a tarball, host that as an artifact internally, then download and extract:
 
 ```
 $ gem install --no-rdoc --no-ri --install-dir tmp/ --no-user-install mixlib-install
@@ -90,7 +99,7 @@ Use it later in a recipe:
 download_location = ::File.join(Chef::Config[:file_cache_path], 'gems.tar')
 
 remote_file download_location do
-  source 'https://s3-us-west-2.amazonaws.com/jmiller-gems/gems.tar'
+  source 'https://your.artifact.server/gems.tar'
   action :create
 end
 
