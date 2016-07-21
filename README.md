@@ -61,7 +61,8 @@ gem_package 'train' do
 end
 ```
 
-Another approach is to simply update root's .gemrc
+Another approach is to simply update what amounts to root's .gemrc
+adding your repo and removing rubygems.org
 ```
 gembin = Chef::Util::PathHelper.join(Chef::Config.embedded_dir,'bin','gem')
 execute 'set internal gem repo' do
