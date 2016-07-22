@@ -16,7 +16,7 @@ The recommended approach is simply migrating over to `inspec` rather then try to
  * https://docs.chef.io/inspec_reference.html
  * https://github.com/chef/inspec
 
-```
+```js
 # .kitchen.yml
 verifier:
    name: inspec
@@ -36,14 +36,14 @@ Host the chefdk package internally so that users can easily install it.
 Host the chef-client package internally; to be used for bootstrapping nodes and in local development with `test-kitchen`
 
 You can reference this location in your `.kitchen.yml` file:
-```
+```js
 provisioner:
   name: chef_zero
     chef_omnibus_url: http://my.web.server/chef-pkgs/install.sh
 ```
 
 The `install.sh` does not require much, it can be as simple as:
-```
+```js
 #!/bin/bash
 
 cd /tmp/
@@ -55,7 +55,7 @@ sudo rpm -Uvh /tmp/chef-12.8.1-1.el7.x86_64.rpm
 Use `--bootstrap-install-sh http://my.web.server/chef-pkgs/install.sh` knife option to point to the location of the installer script.
 
 ### Installing additional gems via chef `gem_package` resource
-```
+```ruby
 gem_package 'train' do
   options('--no-rdoc --no-ri --no-user-install --source https://your.gem.server')
 end
@@ -63,7 +63,7 @@ end
 
 Another approach is to simply update what amounts to root's .gemrc
 adding your repo and removing rubygems.org
-```
+```ruby
 gembin = Chef::Util::PathHelper.join(Chef::Config.embedded_dir,'bin','gem')
 execute 'set internal gem repo' do
  command "#{gembin} source -r https://rubygems.org/ -a https://your.gem.server"
@@ -73,7 +73,7 @@ end
 
 Alternatively, you can bundle up the gems you need into a tarball, host that as an artifact internally, then download and extract:
 
-```
+```sh
 $ gem install --no-rdoc --no-ri --install-dir tmp/ --no-user-install mixlib-install
 Fetching: artifactory-2.3.3.gem (100%)
 Successfully installed artifactory-2.3.3
@@ -96,7 +96,7 @@ $ tar cvf gems.tar *
 ```
 
 Use it later in a recipe:
-```
+```ruby
 download_location = ::File.join(Chef::Config[:file_cache_path], 'gems.tar')
 
 remote_file download_location do
@@ -124,7 +124,7 @@ Cookbooks inevitably have dependencies; managing those in the development phase 
 ### Chef Server
 As of version 12.4.0, Chef Server has a Universe endpoint, which provides the same output as Supermarket or berkshelf-api universe endpoints.
 
-```
+```js
 # Berksfile
 source :chef_server
 
@@ -142,7 +142,7 @@ You can publish to a Supermarket in several ways, some notable methods:
  * https://github.com/sethvargo/stove
  * https://github.com/chef/knife-supermarket (feature has been moved into core Chef in versions greater than 12.11.18)
 
-```
+```js
 # Berksfile
 source 'https://yourinternal.supermarket.com'
 
@@ -154,7 +154,7 @@ MiniMart allows you to specify a list of cookbooks to mirror in YAML. MiniMart w
 
  * https://electric-it.github.io/minimart/
 
-```
+```js
 # Berksfile
 source 'https://yourinternal.minimart.com'
 
