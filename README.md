@@ -45,18 +45,6 @@ Commands:
 Options:
   [--diagnose], [--no-diagnose]  # Show diagnostics (versions, configurations)
 
-~/Devel/ChefProject/tmp$ inspec help json
-Usage:
-  inspec json PATH
-
-Options:
-  o, [--output=OUTPUT]                 # Save the created profile to a path
-      [--controls=one two three]       # A list of controls to include. Ignore all other tests.
-      [--profiles-path=PROFILES_PATH]  # Folder which contains referenced profiles.
-      [--diagnose], [--no-diagnose]    # Show diagnostics (versions, configurations)
-
-read all tests in PATH and generate a JSON summary
-
 ~/Devel/ChefProject/tmp$ inspec exec test/integration/default --format json
 {"version":"0.26.0","summary":{"duration":0.037144,"example_count":3,"failure_count":2,"skip_count":0},"profiles":{"":{"supports":[],"controls":
 {"(generated from test.rb:1 d5357d303b3769b9e8e88dc69924750c)":{"title":null,"desc":null,"impact":0.5,"refs":[],"tags":{},"code":"          
