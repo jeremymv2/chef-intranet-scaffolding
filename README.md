@@ -43,7 +43,7 @@ provisioner:
 ```
 
 The `install.sh` does not require much, it can be as simple as:
-```js
+```sh
 #!/bin/bash
 
 cd /tmp/
