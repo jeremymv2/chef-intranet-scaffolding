@@ -58,7 +58,10 @@ Options:
 read all tests in PATH and generate a JSON summary
 
 ~/Devel/ChefProject/tmp$ inspec json test/integration/default/
-{"supports":[],"controls":{"(generated from test.rb:1 25a9556a0d0002066672dc586b60b195)":{"title":null,"desc":null,"impact":0.5,"refs":[],"tags":{},"code":"          rule = rule_class.new(id, profile_id, {}) do\n            res = describe(*args, &block)\n          end\n","source_location":["/opt/chefdk/embedded/lib/ruby/gems/2.1.0/gems/inspec-0.26.0/lib/inspec/profile_context.rb",181]}},"groups":{"test.rb":{"title":null,"controls":["(generated from test.rb:1 25a9556a0d0002066672dc586b60b195)"]}},"attributes":[]}
+{"supports":[],"controls":{"(generated from test.rb:1 25a9556a0d0002066672dc586b60b195)":{"title":null,"desc":null,"impact":0.5,"refs":[],"tags":{},
+"code":"          rule = rule_class.new(id, profile_id, {}) do\n            res = describe(*args, &block)\n
+end\n","source_location":["/opt/chefdk/embedded/lib/ruby/gems/2.1.0/gems/inspec-0.26.0/lib/inspec/profile_context.rb",181]}},
+"groups":{"test.rb":{"title":null,"controls":["(generated from test.rb:1 25a9556a0d0002066672dc586b60b195)"]}},"attributes":[]}
 
 ~/Devel/ChefProject/tmp$ inspec help exec
 Usage:
