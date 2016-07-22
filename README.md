@@ -25,7 +25,7 @@ verifier:
 
 The developers did an awesome job with the `help` sub-command to inspec - so there's no reason not to migrate!
 
-Check it out.  I use it all the time myself :)
+Check it out.  I use it all the time myself :)  With `kitchen-inspec` (included in ChefDK) you can easily run your tests against a kitchen instance.
 
 ```sh
 ~/Devel/ChefProject/tmp$ inspec help
