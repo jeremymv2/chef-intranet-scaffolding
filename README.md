@@ -23,6 +23,104 @@ verifier:
    format: doc
 ```
 
+The developers did an awesome job with the `help` sub-command to inspec - so there's no reason not to migrate!
+
+Check it out.  I use it all the time myself :)
+
+```sh
+~/Devel/ChefProject/tmp$ inspec help
+Commands:
+  inspec archive PATH                # archive a profile to tar.gz (default) or zip
+  inspec check PATH                  # verify all tests at the specified PATH
+  inspec compliance SUBCOMMAND ...   # Chef Compliance commands
+  inspec detect                      # detect the target OS
+  inspec exec PATHS                  # run all test files at the specified PATH.
+  inspec help [COMMAND]              # Describe available commands or one specific command
+  inspec init TEMPLATE ...           # Scaffolds a new project
+  inspec json PATH                   # read all tests in PATH and generate a JSON summary
+  inspec shell                       # open an interactive debugging shell
+  inspec supermarket SUBCOMMAND ...  # Supermarket commands
+  inspec version                     # prints the version of this tool
+
+Options:
+  [--diagnose], [--no-diagnose]  # Show diagnostics (versions, configurations)
+
+~/Devel/ChefProject/tmp$ inspec help json
+Usage:
+  inspec json PATH
+
+Options:
+  o, [--output=OUTPUT]                 # Save the created profile to a path
+      [--controls=one two three]       # A list of controls to include. Ignore all other tests.
+      [--profiles-path=PROFILES_PATH]  # Folder which contains referenced profiles.
+      [--diagnose], [--no-diagnose]    # Show diagnostics (versions, configurations)
+
+read all tests in PATH and generate a JSON summary
+
+~/Devel/ChefProject/tmp$ inspec json test/integration/default/
+{"supports":[],"controls":{"(generated from test.rb:1 25a9556a0d0002066672dc586b60b195)":{"title":null,"desc":null,"impact":0.5,"refs":[],"tags":{},"code":"          rule = rule_class.new(id, profile_id, {}) do\n            res = describe(*args, &block)\n          end\n","source_location":["/opt/chefdk/embedded/lib/ruby/gems/2.1.0/gems/inspec-0.26.0/lib/inspec/profile_context.rb",181]}},"groups":{"test.rb":{"title":null,"controls":["(generated from test.rb:1 25a9556a0d0002066672dc586b60b195)"]}},"attributes":[]}
+
+~/Devel/ChefProject/tmp$ inspec help exec
+Usage:
+  inspec exec PATHS
+
+Options:
+  t, [--target=TARGET]                     # Simple targeting option using URIs, e.g. ssh://user:pass@host:port
+  b, [--backend=BACKEND]                   # Choose a backend: local, ssh, winrm, docker.
+      [--host=HOST]                        # Specify a remote host which is tested.
+  p, [--port=N]                            # Specify the login port for a remote scan.
+      [--user=USER]                        # The login user for a remote scan.
+      [--password=PASSWORD]                # Login password for a remote scan, if required.
+  i, [--key-files=one two three]           # Login key or certificate file for a remote scan.
+      [--path=PATH]                        # Login path to use when connecting to the target (WinRM).
+      [--sudo], [--no-sudo]                # Run scans with sudo. Only activates on Unix and non-root user.
+      [--sudo-password=SUDO_PASSWORD]      # Specify a sudo password, if it is required.
+      [--sudo-options=SUDO_OPTIONS]        # Additional sudo options for a remote scan.
+      [--sudo-command=SUDO_COMMAND]        # Alternate command for sudo.
+      [--ssl], [--no-ssl]                  # Use SSL for transport layer encryption (WinRM).
+      [--self-signed], [--no-self-signed]  # Allow remote scans with self-signed certificates (WinRM).
+      [--json-config=JSON_CONFIG]          # Read configuration from JSON file (`-` reads from stdin).
+  l, [--log-level=LOG_LEVEL]               # Set the log level: info (default), debug, warn, error
+      [--profiles-path=PROFILES_PATH]      # Folder which contains referenced profiles.
+      [--controls=one two three]           # A list of controls to run. Ignore all other tests.
+      [--format=FORMAT]                    # Which formatter to use: cli, progress, documentation, json, json-min
+      [--color], [--no-color]              # Use colors in output.
+                                           # Default: true
+      [--attrs=one two three]              # Load attributes file (experimental)
+      [--diagnose], [--no-diagnose]        # Show diagnostics (versions, configurations)
+
+run all test files at the specified PATH.
+
+~/Devel/ChefProject/tmp$ inspec exec test/integration/default --format json
+{"version":"0.26.0","summary":{"duration":0.037144,"example_count":3,"failure_count":2,"skip_count":0},"profiles":{"":{"supports":[],"controls":{"(generated from test.rb:1 d5357d303b3769b9e8e88dc69924750c)":{"title":null,"desc":null,"impact":0.5,"refs":[],"tags":{},"code":"          rule = rule_class.new(id, profile_id, {}) do\n            res = describe(*args, &block)\n          end\n","source_location":["/opt/chefdk/embedded/lib/ruby/gems/2.1.0/gems/inspec-0.26.0/lib/inspec/profile_context.rb",181],"results":[{"status":"failed","code_desc":"File /etc/postfix should be file","run_time":0.014447,"start_time":"2016-07-21 11:29:01 -0400","message":"expected `File /etc/postfix.file?` to return true, got false"},{"status":"failed","code_desc":"File /etc/postfix should be mode 644","run_time":0.021464,"start_time":"2016-07-21 11:29:01 -0400","message":"expected `File /etc/postfix.mode?(644)` to return true, got false"},{"status":"passed","code_desc":"File /etc/postfix should be owned by \"root\"","run_time":0.000424,"start_time":"2016-07-21 11:29:01 -0400"}]}},"groups":{"test.rb":{"title":null,"controls":["(generated from test.rb:1 d5357d303b3769b9e8e88dc69924750c)"]}},"attributes":[]}},"other_checks":[]}~/Devel/ChefProject/tmp$
+~/Devel/ChefProject/tmp (master *%)$ kitchen verify
+-----> Starting Kitchen (v1.10.2)
+-----> Setting up <default-ubuntu-1404>...
+       Finished setting up <default-ubuntu-1404> (0m0.00s).
+-----> Verifying <default-ubuntu-1404>...
+       Use `/Users/jmiller/Devel/ChefProject/test123/test/integration/default` for testing
+
+Finished in 0.00027 seconds (files took 0.67817 seconds to load)
+
+File /tmp/file
+  should exist
+  should be file
+  should not be directory
+  should not be block device
+  should not be character device
+  should not be pipe
+  should not be socket
+  should not be symlink
+  should not be mounted
+
+Finished in 0.02156 seconds (files took 0.7893 seconds to load)
+9 examples, 0 failures
+
+       Finished verifying <default-ubuntu-1404> (0m0.47s).
+-----> Kitchen is finished. (0m1.88s)
+~/Devel/ChefProject/test123 (master *%)$
+```
+
 ### Ruby Gems, RPMs, DEBs, etc.
 If you're going to operate Chef without Internet access, you will need to utilize an artifact server to host packages, binaries, gems, rpms, etc.
 
