@@ -99,13 +99,21 @@ provisioner:
     chef_omnibus_url: http://my.web.server/chef-pkgs/install.sh
 ```
 
-The `install.sh` does not require much, it can be as simple as:
+The `install.sh` does not require much, it can be as simple as this for linux:
 ```sh
 #!/bin/bash
 
 cd /tmp/
 wget http://my.web.server/chef-pkgs/chef-12.8.1-1.el7.x86_64.rpm
 sudo rpm -Uvh /tmp/chef-12.8.1-1.el7.x86_64.rpm
+```
+
+or this for windows:
+```sh
+$download_url = 'https://your.host.com/windows/2008r2/x86_64/chef-client-12.12.13.windows.msi'
+
+(New-Object System.Net.WebClient).DownloadFile($download_url, 'C:\\Windows\\Temp\\chef.msi')
+Start-Process 'msiexec' -ArgumentList '/qb /i C:\\Windows\\Temp\\chef.msi' -NoNewWindow -Wait
 ```
 
 ### Bootstrap considerations
