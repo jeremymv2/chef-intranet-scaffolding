@@ -108,13 +108,10 @@ wget http://my.web.server/chef-pkgs/chef-12.8.1-1.el7.x86_64.rpm
 sudo rpm -Uvh /tmp/chef-12.8.1-1.el7.x86_64.rpm
 ```
 
-or this for Windows:
-```sh
-# install-chef.ps1
-$download_url = 'https://your.host.com/windows/2012r2/x86_64/chef-client-12.12.13.windows.msi'
-
-(New-Object System.Net.WebClient).DownloadFile($download_url, 'C:\\Windows\\Temp\\chef.msi')
-Start-Process 'msiexec' -ArgumentList '/qb /i C:\\Windows\\Temp\\chef.msi' -NoNewWindow -Wait
+For Windows, use the `install_msi_url` option under `provisioner`:
+```js
+provisioner:
+  install_msi_url: http://my.web.server/chef-pkgs/chef-client.msi
 ```
 
 ### Bootstrap considerations
