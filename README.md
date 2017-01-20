@@ -86,6 +86,17 @@ If you're going to operate Chef without Internet access, you will need to utiliz
 One very good option for this is Artifactory Pro. It supports almost any artifact / repo known to man, and it allows mirroring rubygems.org or acting like a caching proxy to it.
 https://www.jfrog.com/confluence/display/RTF/RubyGems+Repositories
 
+If using Artifactory with an internally issued SSL certificate, you will need to copy the host's SSL cert to a special location in order for `chef_gem` to use it during SSL validation.
+
+One way to achieve this:
+```
+gem_sslpath =  Mixlib::ShellOut.new('/opt/chef/embedded/bin/gem which rubygems').run_command.stdout.gsub(/\.rb/,'/ssl_certs').chomp!
+
+cookbook_file "#{gem_sslpath}/artifactory.pem" do
+  source 'artifactory.pem'
+end
+```
+
 ### ChefDK
 Host the chefdk package internally so that users can easily install it.
 
