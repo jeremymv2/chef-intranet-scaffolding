@@ -97,6 +97,12 @@ cookbook_file "#{gem_sslpath}/artifactory.pem" do
 end
 ```
 
+Another way, via `.gemrc`:
+```
+# add this to root user's .gemrc
+:ssl_ca_cert: /path/to/a/cacerts_file_that_contains_root_intermediate_host_cert_chain.pem
+```
+
 ### ChefDK
 Host the chefdk package internally so that users can easily install it.
 
