@@ -118,6 +118,14 @@ provisioner:
 Use `--bootstrap-install-sh http://my.web.server/chef-pkgs/install.sh` knife option to point to the location of the installer script.
 
 ### Installing additional gems via chef `gem_package` resource
+If using Chef Client >= 12.8.1 the best option for specifying an alternate gem host is to use `Chef::Config[:rubygems_url]`
+Specify the host in your client.rb
+
+```ruby
+rubygems_url  'https://your.gem.server'
+```
+
+If that's not an option, then other approaches exist:
 ```ruby
 gem_package 'train' do
   options('--no-rdoc --no-ri --no-user-install --source https://your.gem.server')
